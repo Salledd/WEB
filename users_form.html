@@ -1,0 +1,21 @@
+<h2>Регистрация</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <label for="id_username">Username:</label>
+    {{ form.username }}
+    <br>
+
+    <label for="id_password">Password:</label>
+    {{ form.password }}
+    <br>
+
+    <label for="id_role">Role:</label>
+    {{ form.role }}
+    <br>
+
+    <input type="submit" value="Register">
+</form>
+<a href="{% url 'login_user' %}">Уже есть аккаунт? Войти</a>
