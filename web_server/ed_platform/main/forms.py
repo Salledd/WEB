@@ -7,9 +7,9 @@ class RegistrationForm(forms.ModelForm):
         model = Users
         fields = ['username', 'password', 'role']
         widgets = {
-
+            'username': forms.TextInput(attrs={}),
+            'password': forms.PasswordInput(attrs={}),
         }
-
 
 
 

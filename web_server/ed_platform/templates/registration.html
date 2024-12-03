@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="ru">
+<h2>Регистрация</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <label for="id_username">Username:</label>
+    {{ form.username }}
+    <br>
 
-<head>
-    <meta charset="UTF-8">
-</head>
+    <label for="id_password">Password:</label>
+    {{ form.password }}
+    <br>
 
-<body>
-<h1>Зарегистрироваться</h1>
-    <div class="login-form">
-        <form action="/login" method="POST">
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
+    <label for="id_role">Role:</label>
+    {{ form.role }}
+    <br>
 
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
-    
-            <label for="role">Роль:</label>
-            <select id="role" name="role" required>
-                <option value="teacher">Учитель</option>
-                <option value="student">Ученик</option>
-            </select>
-    
-            <input type="submit" value="sign in" />
-        </form>
-    </div>
-</body>
-</html>
+    <input type="submit" value="Register">
+</form>
+<a href="{% url 'login_user' %}">Уже есть аккаунт? Войти</a>

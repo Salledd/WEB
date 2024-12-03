@@ -59,3 +59,10 @@ class Messages(models.Model):
     class Meta:
         ordering = ['timestamp']  # для сортировки по времени
 
+class UserLog(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.SET_NULL, null=True, blank=True, related_name='logs')
+    action = models.CharField(max_length=255)   # наше действие(создание)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username if self.user else 'Anonymous'} - {self.action} - {self.timestamp}"
