@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .profile-header {
+            text-align: center;
+        }
+        .profile-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-section h2 {
+            margin: 0 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-header">
+        <h1>Профиль {{ user.username }}</h1>
+        <p>Роль: {{ user.get_role_display }}</p>
+    </div>
+
+    {% if user.role == 'S' %}
+        <div class="profile-section">
+            <h2>Мои курсы</h2>
+            <ul>
+                {% for course in courses %}
+                    <li>
+                        <strong>{{ course.name }}</strong> - Прогресс: {{ course.progress_percentage }}%
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="profile-section">
+            <h2>Результаты тестов</h2>
+            <ul>
+                {% for grade in grades %}
+                    <li>{{ grade.course.name }} - Оценка: {{ grade.grade }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="profile-section">
+            <h2>Материалы курсов</h2>
+            <ul>
+                {% for material in materials %}
+                    <li>{{ material.name }} ({{ material.course.name }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% elif user.role == 'T' %}
+        <div class="profile-section">
+            <h2>Мои курсы</h2>
+            <ul>
+                {% for course in courses %}
+                    <li>
+                        <strong>{{ course.name }}</strong> - Студентов: {{ course.students.count }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="profile-section">
+            <h2>Успеваемость студентов</h2>
+            <ul>
+                {% for stat in performance %}
+                    <li>
+                        {{ stat.student.username }} ({{ stat.course.name }}) - Средний балл: {{ stat.average_grade }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="profile-section">
+            <h2>Управление курсами</h2>
+            <p><a href="{% url 'manage_courses' %}">Перейти к управлению курсами</a></p>
+        </div>
+    {% endif %}
+</body>
+</html>
