@@ -28,7 +28,7 @@
 <body>
     <div class="profile-header">
         <h1>Профиль {{ user.username }}</h1>
-        <p>Роль: {{ user.get_role_display }}</p>
+        <p>{{ user.get_role_display }}</p>
     </div>
 
     {% if user.role == 'S' %}
