@@ -39,11 +39,9 @@ def register_user(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            user = Users.objects.create_user(
-                username=cleaned_data['username'],
+            user = register(username=cleaned_data['username'],
                 password=cleaned_data['password'],
-                role=cleaned_data['role']
-            )
+                role=cleaned_data['role'])
             # логирование действия
             UserLog.objects.create(user=user, action="Создание пользователя")
 

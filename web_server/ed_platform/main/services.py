@@ -46,13 +46,11 @@ def add_grade(student : Users, course_id, mark : int):
     student.grades_set.add(grade)
     course.grades_set.add(grade)
 
-def send_message(from_id, to_id, text_message : str):
-    if from_id == to_id:
+def send_message(sender : Users, receiver : Users, text_message : str):
+    if sender == receiver:
         raise ValueError("Нельзя отправить сообщение самому себе.")
     if not text_message.strip():
         raise ValueError("Сообщение не может быть пустым.")
-    sender = Users.objects.get(id = from_id)
-    receiver = Users.objects.get(id = to_id)
     message = Messages.objects.create(
         sender=sender,
         receiver=receiver,
@@ -83,9 +81,9 @@ def get_dialogue(user1 : Users, user2 : Users):
 
     messages = Messages.objects.filter(
         sender=user1, receiver=user2
-    ) | Messages.objects.filter(
+        ) | Messages.objects.filter(
         sender=user2, receiver=user1
-    ).order_by('timestamp')
+        ).order_by('timestamp')
     return messages
 
 def has_dialogue(user1 : Users, user2 : Users):
