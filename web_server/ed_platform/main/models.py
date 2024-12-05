@@ -18,7 +18,7 @@ class Courses(models.Model):
     name = models.CharField(max_length=128, blank=False)
     description = models.TextField(null=True)
     students = models.ManyToManyField(Users)
-    teacher_id = models.IntegerField(null=True)
+    teacher = models.ForeignKey(Users, on_delete=models.SET_NULL, null=True, limit_choices_to={'role': Users.TEACHER}, related_name='teacher')
     def __str__(self):
         return self.name
 
@@ -66,3 +66,15 @@ class UserLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username if self.user else 'Anonymous'} - {self.action} - {self.timestamp}"
+
+class Progress(models.Model):
+    student = models.ForeignKey(Users, on_delete=models.CASCADE)
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    completed_materials = models.ManyToManyField(Materials, blank=True)
+    progress_percentage = models.FloatField(default=0.0)
+
+    def update_progress(self):
+        total = self.course.materials_set.count()
+        completed = self.completed_materials.count()
+        self.progress_percentage = (completed / total * 100) if total > 0 else 0
+        self.save()

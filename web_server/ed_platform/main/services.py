@@ -9,11 +9,7 @@ def register(username : str, password : str, role : chr):
     return user
 
 def add_course(name, description = None, teacher : Users = None):
-    if teacher is None:
-        teacher_id = None
-    else:
-        teacher_id = teacher.id
-    Courses.objects.create(name = name, description = description, teacher_id = teacher_id)
+    course = Courses.objects.create(name = name, description = description, teacher = teacher)
 
 def add_material(course_id, topic, name, text = None, pdf = None, photo = None, video = None, link = None):
     course = Courses.objects.get(id = course_id)
@@ -28,6 +24,9 @@ def join_course(student : Users, course_id):
 def del_student_from_course(student : Users, course_id):
     course = Courses.objects.get(id = course_id)
     course.students.remove(student)
+
+def joined_courses(student : Users):
+    return
 
 def add_comment(material_id, comment_text : str):
     comment = Comments(text = comment_text)
