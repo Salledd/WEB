@@ -37,10 +37,10 @@
             <ul>
                 {% for course in courses %}
                     <li>
-                        <p>ID курса: {{ course.id }}</p>
+                        <p>ID курса: {{ course.course.id }}</p>
                         <strong>{{ course.name }}</strong> - Прогресс: {{ course.progress_percentage }}%
-                        {% if course.id %}  
-                            <a href="{% url 'course_materials' course.id %}" class="btn">Перейти к материалу</a>
+                        {% if course.course.id %}  
+                            <a href="{% url 'course_materials' course.course.id %}" class="btn">Перейти к материалу</a>
                         {% else %}
                             <span>Курс не активен</span>
                         {% endif %}

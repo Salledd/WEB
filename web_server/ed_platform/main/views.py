@@ -27,11 +27,11 @@ def test(request):
 
     #send_message(Users.objects.get(username = 'Oleg').id, Users.objects.get(username = 'Sasha').id, 'po pivu?')
     #send_message(Users.objects.get(username = 'Sasha').id, Users.objects.get(username = 'Oleg').id, 'go')
-    d = get_dialogue(Users.objects.get(username = 'Kostya'), Users.objects.get(username = 'Oleg'))
+    #d = get_dialogue(Users.objects.get(username = 'Kostya'), Users.objects.get(username = 'Oleg'))
     #d = get_users_with_dialogues(Users.objects.get(username = 'Sasha').id)
     #d = has_dialogue(Users.objects.get(username = 'Sasha').id, Users.objects.get(username = 'Oleg').id)
 
-    return render(request, 'test.html', {"title" : "Test", "test_v" : Users.objects.get(username = 'Oleg').courses_set.all()})
+    return render(request, 'test.html', )
 
 
 def register_user(request):
@@ -87,6 +87,7 @@ def profile_view(request):
             progress = Progress.objects.filter(student=user, course=course).first()
             progress_percentage = progress.progress_percentage if progress else 0
             progress_data.append({
+                'course': course,
                 'name': course.name,
                 'progress_percentage': progress_percentage
             })
