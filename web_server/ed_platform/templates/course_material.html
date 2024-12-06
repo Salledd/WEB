@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Материалы курса {{ course.name }}</title>
+</head>
+<body>
+    <h1>Материалы курса: {{ course.name }}</h1>
+    <a href="{% url 'profile' %}">Назад к профилю</a>
+    <ul>
+        {% for material in materials %}
+            <li>
+                <h2>{{ material.name }}</h2>
+                <p><strong>Тема:</strong> {{ material.topic }}</p>
+                <p>{{ material.text|default:"Нет описания" }}</p>
+                {% if material.pdf %}
+                    <p><a href="{{ material.pdf.url }}" target="_blank">Скачать PDF</a></p>
+                {% endif %}
+                {% if material.photo %}
+                    <p><img src="{{ material.photo.url }}" alt="{{ material.name }}" style="max-width: 300px;"></p>
+                {% endif %}
+                {% if material.video %}
+                    <p><a href="{{ material.video.url }}" target="_blank">Посмотреть видео</a></p>
+                {% endif %}
+                {% if material.link %}
+                    <p><a href="{{ material.link }}" target="_blank">Перейти по ссылке</a></p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

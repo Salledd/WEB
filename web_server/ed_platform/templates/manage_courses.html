@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление курсами</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h1>Управление курсами</h1>
+    <a href="{% url 'create_course' %}">Создать новый курс</a>
+    <h2>Мои курсы</h2>
+    <ul>
+    {% for course in courses %}
+        <li>
+            {{ course.name }} - {{ course.description }}
+            <a href="{% url 'add_material' %}">Добавить материалы</a>
+            <a href="{% url 'add_student' %}">Добавить студента</a>
+            <h3>Список студентов:</h3>
+            <ul>
+                {% for student in course.students.all %}
+                    <li>
+                        {{ student.username }}
+                        <a href="{% url 'remove_student' course.id student.id %}">Удалить</a>
+                    </li>
+                    <br> 
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
