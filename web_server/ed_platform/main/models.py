@@ -25,11 +25,11 @@ class Courses(models.Model):
 class Materials(models.Model):
     topic = models.CharField(max_length=128)
     name = models.CharField(max_length=128, blank=False)
-    text = models.TextField(null=True)
-    pdf = models.FileField(null=True)
-    photo = models.ImageField(null=True)
-    video = models.FileField(null=True)
-    link = models.TextField(null=True)
+    text = models.TextField(null=True, blank=True)
+    pdf = models.FileField(null=True, blank=True)
+    photo = models.ImageField(null=True, blank=True)
+    video = models.FileField(null=True, blank=True)
+    link = models.TextField(null=True, blank=True)
     course = models.ForeignKey(Courses, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.template.defaultfilters import title
 
 from main.forms import *
@@ -76,11 +76,6 @@ def login_user(request):
             })
     return render(request, 'login.html')
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from .models import Courses, Grades, Materials, Progress
-
-
 @login_required
 def profile_view(request):
     user = request.user
@@ -123,8 +118,82 @@ def profile_view(request):
     return render(request, 'profile.html', context)
 
 
-#def profile_student(request):
-#    return render(request, 'profile_student.html', {"user" : request.user, "courses" : request.user.courses_set.all()})
+@login_required
+def manage_courses_view(request):
+    # Проверяем, что пользователь преподаватель
+    if request.user.role != 'T':
+        return HttpResponseForbidden("Только преподаватели могут управлять курсами.")
 
-#def profile_teacher(request):
-#    return render(request, 'profile_teacher.html', {"user" : request.user, })
+    # Получаем список курсов преподавателя
+    courses = Courses.objects.filter(teacher_id=request.user.id)
+
+    return render(request, 'manage_courses.html', {'courses': courses})
+
+@login_required
+def create_course_view(request):
+    # Проверяем, что пользователь преподаватель
+    if request.user.role != 'T':
+        return HttpResponseForbidden("Только преподаватели могут создавать курсы.")
+
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.teacher = request.user
+            course.save()
+            return redirect('manage_courses')
+    else:
+        form = CourseForm()
+
+    return render(request, 'create_course.html', {'form': form})
+
+@login_required
+def add_material_view(request):
+    # Проверяем, что пользователь преподаватель
+    if request.user.role != 'T':
+        return HttpResponseForbidden("Только преподаватели могут добавлять материалы.")
+
+    if request.method == 'POST':
+        form = MaterialForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('manage_courses')
+    else:
+        form = MaterialForm()
+
+    return render(request, 'add_course_materials.html', {'form': form})
+
+@login_required
+def add_student_to_course_view(request):
+    if request.user.role != 'T':  # Проверка, что пользователь — преподаватель
+        return HttpResponseForbidden("Только преподаватели могут добавлять студентов.")
+
+    if request.method == 'POST':
+        form = AddStudentForm(request.POST)
+        if form.is_valid():
+            student = form.cleaned_data['student']
+            course = form.cleaned_data['course']
+            if course.teacher_id == request.user.id:  # Проверяем, что курс принадлежит преподавателю
+                course.students.add(student)
+                return redirect('manage_courses')
+            else:
+                return HttpResponseForbidden("Вы можете добавлять студентов только в свои курсы.")
+    else:
+        form = AddStudentForm()
+
+    return render(request, 'add_student.html', {'form': form})
+
+@login_required
+def remove_student_from_course_view(request, course_id, student_id):
+    if request.user.role != 'T':  # Проверка, что пользователь — преподаватель
+        return HttpResponseForbidden("Только преподаватели могут удалять студентов.")
+
+    course = get_object_or_404(Courses, id=course_id, teacher_id=request.user.id)
+    student = get_object_or_404(Users, id=student_id, role='S')
+    course.students.remove(student)
+    return redirect('manage_courses')
+
+def course_materials_view(request, course_id):
+    course = get_object_or_404(Courses, id=course_id)
+    materials = Materials.objects.filter(course=course)  # Фильтруем материалы по курсу
+    return render(request, 'course_material.html', {'course': course, 'materials': materials})
