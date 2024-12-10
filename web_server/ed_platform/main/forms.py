@@ -86,3 +86,15 @@ class AddStudentForm(forms.Form):
         queryset=Courses.objects.all(),
         label="Выберите курс"
     )
+
+
+class GradeForm(forms.ModelForm):
+    class Meta:
+        model = Grades
+        fields = ['grade']
+        widgets = {
+            'grade': forms.NumberInput(attrs={'placeholder': 'Введите оценку'}),
+        }
+        labels = {
+            'grade': 'Оценка',
+        }

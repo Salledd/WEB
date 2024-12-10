@@ -37,10 +37,9 @@
             <ul>
                 {% for course in courses %}
                     <li>
-                        <p>ID курса: {{ course.course.id }}</p>
-                        <strong>{{ course.name }}</strong> - Прогресс: {{ course.progress_percentage }}%
+                        <strong>{{ course.name }}</strong> 
                         {% if course.course.id %}  
-                            <a href="{% url 'course_materials' course.course.id %}" class="btn">Перейти к материалу</a>
+                            <a href="{% url 'course_materials' course.course.id %}" class="btn">Перейти к материалам</a>
                         {% else %}
                             <span>Курс не активен</span>
                         {% endif %}
@@ -49,7 +48,7 @@
             </ul>
         </div>
         <div class="profile-section">
-            <h2>Результаты тестов</h2>
+            <h2>Оценки:</h2>
             <ul>
                 {% for grade in grades %}
                     <li>{{ grade.course.name }} - Оценка: {{ grade.grade }}</li>
@@ -80,7 +79,7 @@
             <ul>
                 {% for stat in performance %}
                     <li>
-                        {{ stat.student.username }} ({{ stat.course.name }}) - Средний балл: {{ stat.average_grade }}
+                        {{ stat.student__username }} ({{ stat.course__name }}) - Средний балл: {{ stat.average_grade }}
                     </li>
                 {% endfor %}
             </ul>

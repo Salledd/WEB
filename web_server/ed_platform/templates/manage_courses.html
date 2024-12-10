@@ -11,24 +11,29 @@
     <h1>Управление курсами</h1>
     <a href="{% url 'create_course' %}">Создать новый курс</a>
     <h2>Мои курсы</h2>
-    <ul>
-    {% for course in courses %}
-        <li>
-            {{ course.name }} - {{ course.description }}
-            <a href="{% url 'add_material' %}">Добавить материалы</a>
-            <a href="{% url 'add_student' %}">Добавить студента</a>
-            <h3>Список студентов:</h3>
-            <ul>
-                {% for student in course.students.all %}
+    <p>Заполните только те оценки, которые хотите добавить. Старые оценки останутся без изменений.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <ul>
+            {% for course, students in form_data.items %}
+            <li>
+                <strong>{{ course.name }}</strong> - {{ course.description }}
+                <a href="{% url 'add_material' %}">Добавить материалы</a>
+                <a href="{% url 'add_student' %}">Добавить студента</a>
+                <h3>Список студентов:</h3>
+                <ul>
+                    {% for student_data in students %}
                     <li>
-                        {{ student.username }}
-                        <a href="{% url 'remove_student' course.id student.id %}">Удалить</a>
+                        {{ student_data.student.username }}
+                        {{ student_data.form.grade }}
                     </li>
-                    <br> 
-                {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-</ul>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Добавить оценки</button>
+    </form>
 </body>
 </html>

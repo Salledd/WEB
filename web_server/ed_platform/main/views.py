@@ -81,7 +81,7 @@ def profile_view(request):
     user = request.user
 
     if user.role == 'S':  # Если студент
-        courses = user.courses_set.all()
+        courses = user.courses_set.all().order_by('name')
         progress_data = []
         for course in courses:
             progress = Progress.objects.filter(student=user, course=course).first()
@@ -91,7 +91,7 @@ def profile_view(request):
                 'name': course.name,
                 'progress_percentage': progress_percentage
             })
-        grades = Grades.objects.filter(student=user)
+        grades = Grades.objects.filter(student=user).order_by('course__name')
         materials = Materials.objects.filter(course__in=courses)
 
         context = {
@@ -102,10 +102,11 @@ def profile_view(request):
         }
 
     elif user.role == 'T':  # Если преподаватель
-        courses = Courses.objects.filter(teacher=user)
-        performance = Grades.objects.filter(course__in=courses).values('student', 'course').annotate(
-            average_grade=models.Avg('grade')
-        )
+        courses = Courses.objects.filter(teacher=user).order_by('name')
+
+        performance = Grades.objects.filter(course__in=courses).select_related('student', 'course').values(
+            'student__username', 'course__name'
+        ).annotate(average_grade=models.Avg('grade')).order_by('course__name', 'student__username')
 
         context = {
             'user': user,
@@ -121,14 +122,36 @@ def profile_view(request):
 
 @login_required
 def manage_courses_view(request):
-    # Проверяем, что пользователь преподаватель
-    if request.user.role != 'T':
+    if request.user.role != 'T':  # Проверка, что пользователь преподаватель
         return HttpResponseForbidden("Только преподаватели могут управлять курсами.")
 
-    # Получаем список курсов преподавателя
-    courses = Courses.objects.filter(teacher_id=request.user.id)
+    courses = Courses.objects.filter(teacher=request.user)
+    form_data = {}
 
-    return render(request, 'manage_courses.html', {'courses': courses})
+    if request.method == 'POST':
+        for course in courses:
+            for student in course.students.all():
+                form = GradeForm(request.POST, prefix=f"grade_{course.id}_{student.id}")
+                if form.is_valid():
+                    grade = form.cleaned_data['grade']
+                    if grade is not None:  # Если поле оценки заполнено
+                        # Создаем новую запись для оценки
+                        Grades.objects.create(
+                            student=student,
+                            course=course,
+                            grade=grade
+                        )
+        return redirect('manage_courses')
+
+    for course in courses:
+        form_data[course] = []
+        for student in course.students.all():
+            # Создаем пустую форму, без начального значения
+            form = GradeForm(prefix=f"grade_{course.id}_{student.id}")
+            form_data[course].append({'student': student, 'form': form})
+
+    return render(request, 'manage_courses.html', {'courses': courses, 'form_data': form_data})
+
 
 @login_required
 def create_course_view(request):

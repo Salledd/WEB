@@ -40,12 +40,17 @@ class Comments(models.Model):
     material = models.ForeignKey(Materials, on_delete=models.CASCADE, null=True)
 
 class Grades(models.Model):
-    grade = models.IntegerField()
-    student = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE, null=True)
+    grade = models.IntegerField(null=True, blank=True)
+    student = models.ForeignKey(Users, on_delete=models.CASCADE)
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    time_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['time_add']  # для сортировки по времени
 
     def __str__(self):
-        return self.grade
+        return f"{self.student.username} - {self.course.name}: {self.grade}"
+
 
 class Messages(models.Model):
     sender = models.ForeignKey(Users, on_delete=models.CASCADE, default=None, related_name='sent_messages', )
