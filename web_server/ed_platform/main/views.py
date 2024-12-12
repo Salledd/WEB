@@ -119,7 +119,6 @@ def profile_view(request):
 
     return render(request, 'profile.html', context)
 
-
 @login_required
 def manage_courses_view(request):
     if request.user.role != 'T':  # Проверка, что пользователь преподаватель
@@ -221,3 +220,35 @@ def course_materials_view(request, course_id):
     course = get_object_or_404(Courses, id=course_id)
     materials = Materials.objects.filter(course=course)  # Фильтруем материалы по курсу
     return render(request, 'course_material.html', {'course': course, 'materials': materials})
+
+
+def create_test(request):
+    if request.method == 'POST':
+        test_form = TestForm(request.POST)
+        question_formset = QuestionFormSet(request.POST)
+
+        if test_form.is_valid() and question_formset.is_valid():
+            # Сохраняем экземпляр теста в локальную переменную
+            saved_test = test_form.save()
+
+            for question_form in question_formset:
+                question = question_form.save(commit=False)
+                question.test = saved_test
+                question.save()
+
+                # Обработка вариантов ответа
+                if question.question_type == 'MC':
+                    choice_formset = ChoiceFormSet(request.POST, instance=question)
+                    if choice_formset.is_valid():
+                        choice_formset.save()
+
+            return redirect('test_list')
+    else:
+        test_form = TestForm()
+        question_formset = QuestionFormSet()
+
+    return render(request, 'create_test.html', {
+        'test_form': test_form,
+        'question_formset': question_formset,
+    })
+
