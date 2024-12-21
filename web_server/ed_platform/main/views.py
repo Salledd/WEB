@@ -222,30 +222,38 @@ def course_materials_view(request, course_id):
     return render(request, 'course_material.html', {'course': course, 'materials': materials})
 
 
+from django.http import JsonResponse
+
+
+@login_required
 def create_test(request):
+    if request.user.role != Users.TEACHER:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    QuestionFormSet = inlineformset_factory(Test, Question, form=QuestionForm, extra=1, can_delete=False)
+    ChoiceFormSet = inlineformset_factory(Question, Choice, form=ChoiceForm, extra=2, can_delete=False)
+
     if request.method == 'POST':
         test_form = TestForm(request.POST)
-        question_formset = QuestionFormSet(request.POST)
+        question_formset = QuestionFormSet(request.POST, instance=None)
 
         if test_form.is_valid() and question_formset.is_valid():
-            # Сохраняем экземпляр теста в локальную переменную
-            saved_test = test_form.save()
+            test = test_form.save(commit=False)
+            test.teacher = request.user
+            test.save()
+            question_formset.instance = test
+            questions = question_formset.save()
 
-            for question_form in question_formset:
-                question = question_form.save(commit=False)
-                question.test = saved_test
-                question.save()
-
-                # Обработка вариантов ответа
-                if question.question_type == 'MC':
-                    choice_formset = ChoiceFormSet(request.POST, instance=question)
-                    if choice_formset.is_valid():
-                        choice_formset.save()
+            for question in questions:
+                choice_formset = ChoiceFormSet(request.POST, instance=question)
+                if choice_formset.is_valid():
+                    choice_formset.save()
 
             return redirect('test_list')
+
     else:
         test_form = TestForm()
-        question_formset = QuestionFormSet()
+        question_formset = QuestionFormSet(instance=None)
 
     return render(request, 'create_test.html', {
         'test_form': test_form,

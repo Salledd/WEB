@@ -87,32 +87,23 @@ class Progress(models.Model):
 
 class Test(models.Model):
     name = models.CharField(max_length=255)
-    teacher = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='created_tests')
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Users, on_delete=models.CASCADE, limit_choices_to={'role': Users.TEACHER})
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='tests')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
 
 class Question(models.Model):
-    TEXT = 'TEXT'
+    OPEN_ENDED = 'OE'
     MULTIPLE_CHOICE = 'MC'
     QUESTION_TYPES = [
-        (TEXT, 'Open-Ended'),
-        (MULTIPLE_CHOICE, 'Multiple Choice'),
+        (OPEN_ENDED, 'Open-ended'),
+        (MULTIPLE_CHOICE, 'Multiple-choice'),
     ]
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')
-    text = models.CharField(max_length=255)
-    question_type = models.CharField(max_length=20, choices=QUESTION_TYPES, default=MULTIPLE_CHOICE)
-
-    def __str__(self):
-        return self.text
-
-
-class AnswerOption(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
-    text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
+    text = models.TextField()
+    question_type = models.CharField(choices=QUESTION_TYPES, max_length=2)
 
     def __str__(self):
         return self.text
@@ -120,13 +111,7 @@ class AnswerOption(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
     text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text
-
-
-class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    student = models.ForeignKey(Users, on_delete=models.CASCADE)
-    text = models.TextField(blank=True, null=True)
-    selected_choice = models.ForeignKey(Choice, on_delete=models.SET_NULL, blank=True, null=True)

@@ -109,31 +109,9 @@ class TestForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['text', 'question_type']
-
-        widgets = {
-            'question_type': forms.Select(attrs={'class': 'form-control'}),
-            'text': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your question'}),
-        }
-
-class AnswerOptionForm(forms.ModelForm):
-    class Meta:
-        model = AnswerOption
-        fields = ['text', 'is_correct']
+        fields = ['text']
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
-        fields = ['text']
-
-# Создание inline формы для вариантов ответов
-ChoiceFormSet = inlineformset_factory(
-    parent_model=Question,
-    model=Choice,
-    form=ChoiceForm,
-    extra=2,  # Количество дополнительных форм
-    can_delete=True,
-)
-# Встроенные наборы для динамических вложенных форм
-QuestionFormSet = inlineformset_factory(Test, Question, form=QuestionForm, extra=1, can_delete=True)
-AnswerOptionFormSet = inlineformset_factory(Question, AnswerOption, form=AnswerOptionForm, extra=2, can_delete=True)
+        fields = ['text', 'is_correct']

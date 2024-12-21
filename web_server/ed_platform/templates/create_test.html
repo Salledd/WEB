@@ -1,114 +1,31 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Test</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-<body>
-    <h1>Create Test</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <!-- Поля для имени теста и курса -->
-        <div>
-            <label for="id_name">Test Name:</label>
-            {{ test_form.name }}
-        </div>
-        <div>
-            <label for="id_course">Course:</label>
-            {{ test_form.course }}
-        </div>
-        
-        <!-- Вопросы -->
-        <h2>Questions</h2>
-        <div id="questions">
-            {{ question_formset.management_form }}
-            {% for form in question_formset %}
-                <div class="question-form">
-                    <label>Question:</label>
-                    {{ form.text }}
-                    <label>Type:</label>
-                    {{ form.question_type }}
 
-                    <!-- Варианты ответа -->
-                    <div class="choices-section">
-                        {{ form.choices_formset.management_form }}
-                        {% for choice_form in form.choices_formset %}
-                            <div class="choice-form">
-                                <label>Choice:</label>
-                                {{ choice_form.text }}
-                            </div>
-                        {% endfor %}
-                        <button type="button" class="add-choice">Add Choice</button>
+{% load static %} <!-- Загрузка тега static -->
+
+{% block content %}
+<h1>Create Test</h1>
+<form method="post" id="test-form">
+    {% csrf_token %}
+    {{ test_form.as_p }}
+    <h2>Questions</h2>
+    <div id="questions">
+        {{ question_formset.management_form }}
+        {% for form in question_formset %}
+            <div class="question-form">
+                {{ form.as_p }}
+                <h3>Choices</h3>
+                <div class="choices">
+                    <button type="button" class="add-choice">Add Choice</button>
+                    <div class="choice-forms">
+                        <!-- Choice inputs will be dynamically added here -->
                     </div>
-                    <button type="button" class="remove-question">Remove Question</button>
                 </div>
-            {% endfor %}
-        </div>
+                <button type="button" class="remove-question">Remove Question</button>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-question">Add Question</button>
+    <button type="submit">Save Test</button>
+</form>
 
-        <!-- Кнопка добавить вопрос -->
-        <button type="button" id="add-question">Add Question</button>
-
-        <!-- Кнопка сохранить тест -->
-        <button type="submit">Save Test</button>
-    </form>
-
-    <script>
-        $(document).ready(function () {
-            let questionTotalForms = $('#id_questions-TOTAL_FORMS'); // Общее количество вопросов
-            let questionContainer = $('#questions');
-            let addQuestionBtn = $('#add-question');
-
-            // Добавление нового вопроса
-            addQuestionBtn.click(function () {
-                let formCount = parseInt(questionTotalForms.val());
-                let newQuestion = $('.question-form:first').clone(false);
-
-                // Обновляем атрибуты name и id для новой формы вопроса
-                newQuestion.find(':input').each(function () {
-                    let name = $(this).attr('name').replace(`-${formCount - 1}-`, `-${formCount}-`);
-                    let id = $(this).attr('id').replace(`-${formCount - 1}-`, `-${formCount}-`);
-                    $(this).attr({ 'name': name, 'id': id }).val('');
-                });
-
-                // Обновляем количество форм
-                questionContainer.append(newQuestion);
-                formCount++;
-                questionTotalForms.val(formCount);
-
-                // Создаем форму вариантов ответов для нового вопроса
-                let choiceFormsetContainer = $('<div class="choices-section"></div>');
-                let choiceFormset = new ChoiceFormSet({ parent: choiceFormsetContainer, prefix: `choices-${formCount - 1}` });
-                newQuestion.find('.choices-section').append(choiceFormset.render());
-            });
-
-            // Удаление вопроса
-            $(document).on('click', '.remove-question', function () {
-                $(this).closest('.question-form').remove();
-                let formCount = parseInt(questionTotalForms.val()) - 1;
-                questionTotalForms.val(formCount); // Уменьшаем общее количество форм
-            });
-
-            // Добавление вариантов ответа
-            $(document).on('click', '.add-choice', function () {
-                let choicesSection = $(this).closest('.choices-section');
-                let totalChoices = choicesSection.find('[id$="-TOTAL_FORMS"]');
-                let formCount = parseInt(totalChoices.val());
-                let newChoice = choicesSection.find('.choice-form:first').clone(false);
-
-                newChoice.find(':input').each(function () {
-                    let name = $(this).attr('name').replace(`-${formCount - 1}-`, `-${formCount}-`);
-                    let id = $(this).attr('id').replace(`-${formCount - 1}-`, `-${formCount}-`);
-                    $(this).attr({ 'name': name, 'id': id }).val('');
-                });
-
-                // Обновляем количество форм
-                choicesSection.append(newChoice);
-                formCount++;
-                totalChoices.val(formCount);
-            });
-        });
-    </script>
-</body>
-</html>
+<script src="{% static 'js/create_test.js' %}"></script>
+{% endblock %}
