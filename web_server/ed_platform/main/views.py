@@ -282,6 +282,19 @@ def remove_student_from_course_view(request, course_id, student_id):
 def course_materials_view(request, course_id):
     course = get_object_or_404(Courses, id=course_id)
     materials = Materials.objects.filter(course=course)  # Фильтруем материалы по курсу
+    
+    if request.method == 'POST':
+        material_id = request.POST.get('material_id')
+        text = request.POST.get('comment_text')
+        material = get_object_or_404(Materials, id=material_id)
+
+        if text.strip():
+            Comments.objects.create(
+                material=material,
+                author=request.user,
+                text=text
+            )
+            return redirect('course_materials', course_id=course_id)
     return render(request, 'course_material.html', {'course': course, 'materials': materials})
 
 
@@ -327,10 +340,6 @@ def create_test(request):
         test_form = TestForm()
 
     return render(request, 'create_test.html', {'test_form': test_form})
-
-
-
-
 
 
 @login_required
@@ -386,3 +395,39 @@ def take_test(request, test_id):
         return render(request, 'test_result.html', {'grade': grade})
 
     return render(request, 'take_test.html', {'test': test})
+
+
+@login_required
+def chat_view(request, user_id):
+    # Получаем пользователя, с которым будет происходить чат
+    other_user = get_object_or_404(Users, id=user_id)
+    
+    # Проверка, что нельзя писать самому себе
+    if other_user == request.user:
+        return redirect('profile')  # Перенаправить на профиль
+    
+    # Получаем все сообщения между пользователями
+    messages = Messages.objects.filter(
+        sender__in=[request.user, other_user],
+        receiver__in=[request.user, other_user]
+    ).order_by('timestamp')
+
+    # Обработка отправки нового сообщения
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.receiver = other_user
+            message.save()
+            return redirect('chat', user_id=user_id)  # Обновляем страницу
+    else:
+        form = MessageForm()
+
+    context = {
+        'other_user': other_user,
+        'messages': messages,
+        'form': form,
+    }
+    return render(request, 'chat.html', context)
+

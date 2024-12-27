@@ -25,7 +25,8 @@
                         <strong>{{ course.name }}</strong>
                         {% if course.course.id %}
                             <a href="{% url 'course_materials' course.course.id %}" class="btn">Перейти к материалам</a>
-                        {% else %}
+                            <a href="{% url 'chat' course.course.teacher.id %}" class="btn btn-chat">Чат с преподавателем ({{ course.course.teacher.username }})</a>
+                            {% else %}
                             <span class="inactive-course">Курс не активен</span>
                         {% endif %}
                     </li>

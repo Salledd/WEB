@@ -25,7 +25,8 @@ urlpatterns = [
     path('courses/apply/<int:course_id>/', apply_course, name='apply_course'),
     path('applications/', manage_applications, name='manage_applications'),
     path('applications/<int:application_id>/<str:status>/', update_application_status, name='update_application_status'),
-    #path('login/', user_login, name='login'),
+    
+    path('chat/<int:user_id>/', chat_view, name='chat'),
     path('', test, name='test'),
 ]
 

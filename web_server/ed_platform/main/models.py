@@ -49,8 +49,17 @@ class Materials(models.Model):
         return self.name
 
 class Comments(models.Model):
+    material = models.ForeignKey(Materials, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(Users, on_delete=models.CASCADE)
     text = models.TextField()
-    material = models.ForeignKey(Materials, on_delete=models.CASCADE, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"{self.author.username}: {self.text[:30]}"
+
 
 class Grades(models.Model):
     grade = models.IntegerField(null=True, blank=True)

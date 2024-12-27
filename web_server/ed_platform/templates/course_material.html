@@ -6,31 +6,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Материалы курса {{ course.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/course_material_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
-    <h1>Материалы курса: {{ course.name }}</h1>
-    <a href="{% url 'profile' %}">Назад к профилю</a>
-    <ul>
-        {% for material in materials %}
-            <li>
+    <main>
+        <div class="profile-header">
+            <h1>Материалы курса: {{ course.name }}</h1>
+        </div>
+        <a href="{% url 'profile' %}" class="btn">Назад к профилю</a>
+        <ul class="material-list">
+            {% for material in materials %}
+            <li class="material-item">
                 <h2>{{ material.name }}</h2>
                 <p><strong>Тема:</strong> {{ material.topic }}</p>
                 <p>{{ material.text|default:"Нет описания" }}</p>
                 {% if material.pdf %}
-                    <p><a href="{{ material.pdf.url }}" target="_blank">Скачать PDF</a></p>
+                <p><a href="{{ material.pdf.url }}" target="_blank">Скачать PDF</a></p>
                 {% endif %}
                 {% if material.photo %}
-                    <p><img src="{{ material.photo.url }}" alt="{{ material.name }}" style="max-width: 300px;"></p>
+                <p><img src="{{ material.photo.url }}" alt="{{ material.name }}" class="material-image"></p>
                 {% endif %}
                 {% if material.video %}
-                    <p><a href="{{ material.video.url }}" target="_blank">Посмотреть видео</a></p>
+                <p><a href="{{ material.video.url }}" target="_blank">Посмотреть видео</a></p>
                 {% endif %}
                 {% if material.link %}
-                    <p><a href="{{ material.link }}" target="_blank">Перейти по ссылке</a></p>
+                <p><a href="{{ material.link }}" target="_blank">Перейти по ссылке</a></p>
                 {% endif %}
+
+                <!-- Комментарии -->
+                <div class="comments-section">
+                    <h3>Комментарии:</h3>
+                    <ul>
+                        {% for comment in material.comments.all %}
+                        <li class="comment">
+                            <strong>{{ comment.author.username }}</strong>
+                            <p>{{ comment.text }}</p>
+                            <span class="timestamp">{{ comment.timestamp }}</span>
+                        </li>
+                        {% empty %}
+                        <p>Комментариев пока нет.</p>
+                        {% endfor %}
+                    </ul>
+                    <form method="post" class="comment-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="material_id" value="{{ material.id }}">
+                        <textarea name="comment_text" placeholder="Добавить комментарий..." required></textarea>
+                        <button type="submit">Отправить</button>
+                    </form>
+                </div>
             </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    </main>
 </body>
 </html>
 {% endblock %}

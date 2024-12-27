@@ -117,3 +117,14 @@ form .btn-submit-grades {
 form .btn-submit-grades:hover {
     background-color: #218838;
 }
+
+/* Кнопка для чата */
+.btn-chat {
+    background-color: #f39c12;
+    color: white;
+    margin-left: 10px;
+}
+
+.btn-chat:hover {
+    background-color: #e67e22;
+}

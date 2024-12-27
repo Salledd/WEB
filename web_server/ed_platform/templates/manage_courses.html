@@ -29,6 +29,7 @@
                     <li class="student-item">
                         {{ student_data.student.username }}
                         {{ student_data.form.grade }}
+                        <a href="{% url 'chat' student_data.student.id %}" class="btn btn-chat">Чат с {{ student_data.student.username }}</a>
                     </li>
                     {% endfor %}
                 </ul>

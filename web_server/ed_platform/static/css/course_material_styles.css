@@ -1,0 +1,136 @@
+/* === Стили для страницы материалов курса === */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Убираем смещение и перекрытие хедером */
+main {
+    margin-top: 30px; /* Указываем высоту header */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #007BFF;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #007BFF;
+    margin-bottom: 15px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.material-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.material-item h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5em;
+}
+
+.material-item p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.material-item a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.material-item a:hover {
+    text-decoration: underline;
+}
+
+.material-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Секция комментариев */
+.comments-section {
+    margin-top: 30px;
+}
+
+.comments-section h3 {
+    color: #007BFF;
+    margin-bottom: 15px;
+}
+
+.comment {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.comment strong {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.comment p {
+    margin: 0;
+    color: #555;
+}
+
+/* Форма добавления комментариев */
+.comment-form {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.comment-form button {
+    display: block;
+    width: 100%;
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.comment-form button:hover {
+    background-color: #0056b3;
+}
