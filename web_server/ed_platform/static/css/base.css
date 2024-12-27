@@ -1,0 +1,54 @@
+/* === Header Styles === */
+
+main {
+    margin-top: 80px; /* Укажите высоту вашей шапки */
+    padding: 20px;
+}
+
+.static-header {
+    position: fixed; /* Закрепляет header в верхней части */
+    top: 0;
+    left: 0;
+    width: 100%; /* Растягивает фон на всю ширину окна */
+    background-color: #333; /* Тёмный фон */
+    color: white;
+    z-index: 1000; /* Устанавливает приоритет слоя для отображения поверх контента */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавляет лёгкую тень */
+    padding: 1em 0;
+}
+
+.header-title {
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+    margin: auto; 
+}
+
+.header-menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    padding: 0;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.header-link {
+    color: white;
+    background-color: #474747; /* Тёмный фон */
+    text-decoration: none;
+    padding: 5px 15px;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+}
+
+/* === Footer Styles === */
+.footer {
+    text-align: center;
+    margin-top: 2em;
+    color: #777;
+    padding: 1em 0;
+    background-color: #f4f4f4;
+}

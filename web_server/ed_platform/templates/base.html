@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %} <!-- Загрузка библиотеки static -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Platform{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <header class="static-header">
+        <nav>
+            <div class="header-title">My Platform</div>
+            <ul class="header-menu">
+                <li><a href="{% url 'profile' %}" class="header-link">Профиль</a></li>
+                {% if user.role == 'T' %}
+                <li><a href="{% url 'create_test' %}" class="header-link">Cоздать тест</a></li>
+                {% endif %}
+                {% if user.role == 'S' %}
+                    <li><a href="{% url 'view_courses' %}" class="header-link">Курсы</a></li>
+                {% elif user.role == 'T' %}
+                    <li><a href="{% url 'manage_courses' %}" class="header-link">Курсы</a></li>
+                {% endif %}
+                <li><a href="{% url 'logout' %}" class="header-link">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 My Platform</p>
+    </footer>
+</body>
+</html>

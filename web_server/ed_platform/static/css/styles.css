@@ -1,0 +1,139 @@
+/* === Общие стили === */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 1em;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* === Стили шапки (Header) === */
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    gap: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+/* === Основной контент (Main) === */
+main {
+    max-width: 1200px;
+    margin: 2em auto;
+    padding: 0 1em;
+}
+
+.profile-header {
+    text-align: center;
+    background-color: #007BFF;
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.profile-header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.profile-header p {
+    margin: 0;
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.profile-section {
+    background: white;
+    margin: 10px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section h2 {
+    margin-top: 0;
+    color: #007BFF;
+}
+
+.profile-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-section li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-section li:last-child {
+    border-bottom: none;
+}
+
+.btn {
+    display: inline-block;
+    background: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+.btn:hover {
+    background: #0056b3;
+}
+
+.btn-test {
+    background: #28a745;
+}
+
+.btn-test:hover {
+    background: #218838;
+}
+
+/* === Футер (Footer) === */
+footer {
+    text-align: center;
+    margin-top: 2em;
+    color: #777;
+}
+
+

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Available Tests{% endblock %}
+
+{% block content %}
+<h1>Available Tests</h1>
+<ul>
+    {% for test in tests %}
+        <li>
+            <strong>{{ test.name }}</strong> (Course: {{ test.course.name }})
+            <a href="{% url 'take_test' test.id %}">Пройти тест</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

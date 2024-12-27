@@ -18,7 +18,10 @@ def add_material(course_id, topic, name, text = None, pdf = None, photo = None, 
     course.materials_set.add(material)
 
 def join_course(student : Users, course_id):
-    course = Courses.objects.get(id = course_id)
+    if course_id is int:
+        course = Courses.objects.get(id = course_id)
+    else:
+        course = course_id
     course.students.add(student)
 
 def del_student_from_course(student : Users, course_id):

@@ -22,6 +22,19 @@ class Courses(models.Model):
     def __str__(self):
         return self.name
 
+class CourseApplication(models.Model):
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('ACCEPTED', 'Accepted'),
+        ('REJECTED', 'Rejected'),
+    ]
+    student = models.ForeignKey(Users, on_delete=models.CASCADE, limit_choices_to={'role': Users.STUDENT})
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='applications')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+
+    def __str__(self):
+        return f"{self.student.username} -> {self.course.name} ({self.status})"
+
 class Materials(models.Model):
     topic = models.CharField(max_length=128)
     name = models.CharField(max_length=128, blank=False)

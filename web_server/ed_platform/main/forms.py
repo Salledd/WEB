@@ -55,7 +55,7 @@ class CourseForm(forms.ModelForm):
 class MaterialForm(forms.ModelForm):
     class Meta:
         model = Materials
-        fields = ['topic', 'name', 'text', 'pdf', 'photo', 'video', 'link', 'course']
+        fields = ['topic', 'name', 'text', 'pdf', 'photo', 'video', 'link']
         labels = {
             'topic': 'Тема',
             'name': 'Название',
@@ -64,10 +64,9 @@ class MaterialForm(forms.ModelForm):
             'photo': 'Изображение',
             'video': 'Видео',
             'link': 'Ссылка',
-            'course': 'Курс',
         }
         widgets = {
-            'course': forms.Select(attrs={'class': 'form-select'})
+            'course': forms.HiddenInput()  # Делаем поле скрытым
         }
 
     def __init__(self, *args, **kwargs):
@@ -97,6 +96,11 @@ class GradeForm(forms.ModelForm):
         labels = {
             'grade': 'Оценка',
         }
+
+class CourseApplicationForm(forms.ModelForm):
+    class Meta:
+        model = CourseApplication
+        fields = []
 
 #TESTS ->
 from django.forms import inlineformset_factory

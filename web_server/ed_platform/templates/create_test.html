@@ -1,31 +1,44 @@
+{% extends "base.html" %}
 
-{% load static %} <!-- Загрузка тега static -->
+{% block title %}Создание Теста{% endblock %}
 
 {% block content %}
-<h1>Create Test</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/create_test.css' %}">
+</head>
+<h1 class="page-title">Создание Теста</h1>
 <form method="post" id="test-form">
     {% csrf_token %}
-    {{ test_form.as_p }}
-    <h2>Questions</h2>
-    <div id="questions">
-        {{ question_formset.management_form }}
-        {% for form in question_formset %}
-            <div class="question-form">
-                {{ form.as_p }}
-                <h3>Choices</h3>
-                <div class="choices">
-                    <button type="button" class="add-choice">Add Choice</button>
-                    <div class="choice-forms">
-                        <!-- Choice inputs will be dynamically added here -->
-                    </div>
-                </div>
-                <button type="button" class="remove-question">Remove Question</button>
-            </div>
-        {% endfor %}
+    <div class="form-container">
+        {{ test_form.as_p }}
     </div>
-    <button type="button" id="add-question">Add Question</button>
-    <button type="submit">Save Test</button>
-</form>
 
+    <div id="questions">
+        <!-- Первый вопрос -->
+        <div class="question" data-index="0">
+            <textarea name="question_text" placeholder="Enter question text"></textarea>
+            <h3 class="question-title">Варианты ответов:</h3>
+            <div class="choices">
+                <div>
+                    <input type="text" name="choice_text_0" placeholder="Enter choice text">
+                    <label>
+                        <input type="checkbox" name="is_correct_0" value="0"> Правильный
+                    </label>
+                    <button type="button" class="remove-choice btn-danger">Удалить вариант</button>
+                </div>
+            </div>
+            <button type="button" class="add-choice btn-success">Добавть вариант</button>
+            <button type="button" class="remove-question btn-danger">Удалить вопрос</button>
+        </div>
+    </div>
+
+    <button type="button" id="add-question" class="btn-primary">Добавить вопрос</button>
+    <button type="submit" class="btn-success">Сохранить тест</button>
+</form>
 <script src="{% static 'js/create_test.js' %}"></script>
+
 {% endblock %}

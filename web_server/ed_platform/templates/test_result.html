@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Test Result{% endblock %}
+
+{% block content %}
+<h1>Test Result</h1>
+<p>Your score: {{ grade }}%</p>
+<a href="{% url 'available_tests' %}">Вернуться к тесам</a>
+{% endblock %}

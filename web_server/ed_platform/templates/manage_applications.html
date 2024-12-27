@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Applications{% endblock %}
+
+{% block content %}
+<h1>Manage Applications</h1>
+<ul>
+    {% for application in applications %}
+        <li>
+            {{ application.student.username }} applied to {{ application.course.name }}
+            <a href="{% url 'update_application_status' application.id 'ACCEPTED' %}">Принять</a>
+            <a href="{% url 'update_application_status' application.id 'REJECTED' %}">Отклонить</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+    

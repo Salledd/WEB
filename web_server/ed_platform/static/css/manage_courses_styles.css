@@ -1,0 +1,119 @@
+/* === Стили для страницы управления курсами === */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Убираем смещение и перекрытие хедером */
+main {
+    margin-top: 80px; /* Указываем высоту header */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
+/* Заголовок страницы */
+h1 {
+    text-align: center;
+    color: #007BFF;
+    margin-bottom: 20px;
+}
+
+/* Подзаголовки */
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Список курсов */
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.course-item strong {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.course-description {
+    color: #555;
+}
+
+/* Список студентов */
+.student-list {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.student-item {
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Ссылки */
+a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Кнопки */
+.btn-create-course,
+.btn-add-material,
+.btn-add-student,
+.btn-submit-grades {
+    display: inline-block;
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.btn-create-course:hover,
+.btn-add-material:hover,
+.btn-add-student:hover,
+.btn-submit-grades:hover {
+    background-color: #0056b3;
+}
+
+/* Кнопка отправки оценок */
+form .btn-submit-grades {
+    width: 100%;
+    background-color: #28a745;
+}
+
+form .btn-submit-grades:hover {
+    background-color: #218838;
+}

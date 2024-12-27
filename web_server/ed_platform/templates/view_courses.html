@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}All Courses{% endblock %}
+
+{% block content %}
+<h1>Все курсы:</h1>
+<ul>
+    {% for course in courses %}
+        <li>
+            <strong>{{ course.name }}</strong> - Преподаватель: {{ course.teacher.username }}
+            {% if user.role == 'S' %}
+                <form method="post" action="{% url 'apply_course' course.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Отправить заявку</button>
+                </form>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+    

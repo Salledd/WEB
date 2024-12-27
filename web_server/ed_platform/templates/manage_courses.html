@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,26 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление курсами</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/manage_courses_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Управление курсами</h1>
-    <a href="{% url 'create_course' %}">Создать новый курс</a>
-    <h2>Мои курсы</h2>
-    <p>Заполните только те оценки, которые хотите добавить. Старые оценки останутся без изменений.</p>
-
-    <form method="POST">
+    <h1 class="profile-header">Управление курсами</h1>
+    <a href="{% url 'create_course' %}" class="btn">Создать новый курс</a>
+    <h2 class="section-title">Мои курсы</h2>
+    <form method="POST" class="course-form">
         {% csrf_token %}
-        <ul>
+        <ul class="course-list">
             {% for course, students in form_data.items %}
-            <li>
-                <strong>{{ course.name }}</strong> - {{ course.description }}
-                <a href="{% url 'add_material' %}">Добавить материалы</a>
-                <a href="{% url 'add_student' %}">Добавить студента</a>
-                <h3>Список студентов:</h3>
-                <ul>
+            <li class="course-item">
+                <strong class="course-name">{{ course.name }}</strong><span class="course-description">{{ course.description }}</span>
+                <a href="{% url 'add_material' course.id %}" class="btn">Добавить материалы</a>
+                <a href="{% url 'add_student' %}" class="btn">Добавить студента</a>
+                <h3 class="student-list-title">Список студентов:</h3>
+                <ul class="student-list">
                     {% for student_data in students %}
-                    <li>
+                    <li class="student-item">
                         {{ student_data.student.username }}
                         {{ student_data.form.grade }}
                     </li>
@@ -33,7 +35,8 @@
             </li>
             {% endfor %}
         </ul>
-        <button type="submit">Добавить оценки</button>
+        <button type="submit" class="btn-submit-grades">Добавить оценки</button>
     </form>
 </body>
 </html>
+{% endblock %}

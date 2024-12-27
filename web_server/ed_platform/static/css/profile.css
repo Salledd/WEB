@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.profile-header {
+    text-align: center;
+    padding: 20px;
+    background-color: #5bc0de;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.profile-header h1 {
+    margin: 0;
+    color: white;
+    font-size: 2.5em;
+}
+
+.profile-header p {
+    margin: 5px 0 0;
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.profile-section {
+    background: white;
+    margin: 10px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section h2 {
+    margin-top: 0;
+    color: #5bc0de;
+}
+
+.profile-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-section li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-section li:last-child {
+    border-bottom: none;
+}
+
+.inactive-course {
+    color: red;
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    background: #2394b6; 
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 0.9em;
+    border: none;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #3fab8c;
+}
+
+.btn-test {
+    background: #28a745;
+}
+
+.btn-test:hover {
+    background: #218838;
+}

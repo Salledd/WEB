@@ -1,13 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создать курс</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_course.css' %}">
+    <title>class="profile-header">Создать курс</title>
 </head>
 <body>
-    <h1>Создать новый курс</h1>
-    <form method="post">
+    <h1 class="profile-header">Создать новый курс</h1>
+    <form method="post" class="course-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Создать</button>
@@ -15,3 +20,6 @@
     <a href="{% url 'manage_courses' %}">Назад к управлению курсами</a>
 </body>
 </html>
+{% endblock %}
+
+
